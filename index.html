@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Live Currency Converter App by Shifa</title>
+		<style>
+			*{font-size:40px;font-family:Courier;}
+			body{background-color:thistle;}
+			h1{border:solid; background-color:white; width:60%;}
+		</style>
+	</head>
+
+	<body>
+	<center>
+		<h1> ~ Live Currency Converter App ~ </h1>
+		<form onsubmit="convert()">
+			<label for="amt"> $ </label>
+			<input type="number"	step="any" 	id="amt" 	placeholder="Enter Amount" />
+			<br/><br/>
+			<input type="submit" 	value="convert to ₹" />			
+		</form>
+
+		<h2 id="msg" />
+
+		<script>
+			function convert()
+			{
+				event.preventDefault();
+				let msg=document.getElementById("msg");
+				let amt=document.getElementById("amt");
+
+				if(amt.value==="")
+				{
+					msg.innerHTML="";
+					alert("please enter a value");
+					amt.focus();
+					return;
+				}
+				
+				let url="https://api.exchangerate-api.com/v4/latest/USD";
+
+				fetch(url)
+				.then(res=>res.json())
+				.then(data=>{
+					let dollar= data.rates.INR;
+					let aid=parseFloat(amt.value);
+					let air=aid*dollar;
+					msg.innerHTML="The amount is ₹" + air.toFixed(2);
+				})
+				.catch(err=> {
+					msg.innerHTML="error "+err;
+				})
+			}
+		</script>
+	</center>
+	</body>
+</html>
